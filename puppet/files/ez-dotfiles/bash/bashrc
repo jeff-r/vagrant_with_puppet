@@ -1,0 +1,33 @@
+if [ -f /etc/bashrc ]; then
+  . /etc/bashrc
+fi
+
+# these are shared with zsh
+if [ -f $HOME/.bash_functions ]; then
+  . $HOME/.bash_functions
+fi
+
+if [ -f $HOME/.bash_path ]; then
+  . $HOME/.bash_path
+fi
+
+if [ -f $HOME/.bash_aliases ]; then
+  . $HOME/.bash_aliases
+fi
+
+function parse_git_branch {
+  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/ \(\1$(parse_git_dirty)\)/"
+}
+
+function parse_git_dirty {
+  git diff-index --quiet --cached HEAD --ignore-submodules -- 2> /dev/null && git diff-files --quiet --ignore-submodules 2> /dev/null || echo ' *'
+}
+
+export PS1='\u@\h:\W\[\e[32m\]$(parse_git_branch)\[\e[m\] % '
+export EDITOR=vim
+
+export LS_COLORS='no=00:fi=00:di=32:ln=35:pi=40;33:so=01;35:bd=40;33;01:cd=40;33;01:or=01;37;41:mi=01;05;37;41:ex=31'
+
+set -o vi
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"

@@ -1,0 +1,17 @@
+[color]
+  branch = auto
+  diff = auto
+  status = auto
+[alias]
+  l = log --graph --pretty=format':%C(yellow)%h%Cblue%d%Creset %s %C(white) %an, %ar%Creset'
+  st = status
+  ci = commit
+  br = branch
+  co = checkout
+  df = diff
+  lg = log -p
+[user]
+	# name = Your Name
+	# email = you@example.com
+[branch]
+	autosetupmerge = true
