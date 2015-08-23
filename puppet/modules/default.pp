@@ -11,11 +11,18 @@ node default {
     ensure => present,
   }
 
-  service{"nginx":
-    ensure  => running,
-    require => Package["nginx-full"],
+  file{"/etc/nginx/sites-enabled/default":
+    ensure => link,
+    target => "/vagrant/puppet/files/nginx/default",
+    force  => true
   }
 
+  service{"nginx":
+    ensure  => running,
+    require => [ Package["nginx-full"], File["/etc/nginx/sites-enabled/default"] ]
+  }
+
+  # dotfiles
   file{"/root/ez-dotfiles":
     ensure  => link,
     target  => "/vagrant/puppet/files/ez-dotfiles",
@@ -32,7 +39,6 @@ node default {
     ensure  => link,
     target  => "/vagrant/puppet/files/ez-dotfiles/vim/vimrc",
   }
-
   file{"/root/.bashrc":
     ensure  => link,
     target  => "/vagrant/puppet/files/ez-dotfiles/bash/bashrc"
@@ -53,12 +59,10 @@ node default {
     ensure  => link,
     target  => "/vagrant/puppet/files/ez-dotfiles/bash/bash_path"
   }
-
   file{"/root/.gitconfig":
     ensure  => link,
     target  => "/vagrant/puppet/files/ez-dotfiles/git/gitconfig"
   }
-
   file{"/root/.tmux.conf":
     ensure  => link,
     target  => "/vagrant/puppet/files/ez-dotfiles/tmux/tmux.conf"
