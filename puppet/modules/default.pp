@@ -1,11 +1,7 @@
 node default {
-  notify{ "The default puppet configuration": }
-}
-
-node vagrant-ubuntu-trusty-64 {
   include apt
+  include stdlib
 
-  notify{ "We're in Ubuntu": }
   file{"/root/test-file.txt":
     ensure  => "file",
     content => "This file is managed by puppet",
@@ -20,19 +16,9 @@ node vagrant-ubuntu-trusty-64 {
     require => Package["nginx-full"],
   }
 
-  file{"/root/nginx.foo":
-    ensure  => file,
-    content => "Woo hoo!",
-    notify  => Service["nginx"],
-  }
-
-  file{"/etc/puppet/":
-    ensure => link,
-    target => "/vagrant/puppet/"
+  file{"/root/.vimrc":
+    ensure  => link,
+    target  => "/vagrant/puppet/files/.vimrc",
+    force => true,
   }
 }
-
-node www {
-  notify{ "We're in www": }
-}
-
