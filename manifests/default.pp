@@ -11,6 +11,10 @@ node default {
     ensure => present,
   }
 
+  package{"git":
+    ensure => present,
+  }
+
   file{"/etc/nginx/sites-enabled/default":
     ensure => link,
     target => "/vagrant/files/nginx/default",
